@@ -1,19 +1,50 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+plugins {
+    id 'com.android.application'
+}
 
-buildscript {
-    repositories {
-        jcenter()
+android {
+    namespace 'com.github.jthuraisamy.mastertap'
+    compileSdk 34 // Compatibilitate cu Android modern
+
+    defaultConfig {
+        applicationId "com.github.jthuraisamy.mastertap"
+        minSdk 26     // Android 8.0 (minim necesar pentru securitate/crypto modernă)
+        targetSdk 34  // Android 14
+        versionCode 2
+        versionName "2.0-modern"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.+'
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+            applicationIdSuffix ".debug"
+        }
+    }
+    
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 }
 
-allprojects {
-    repositories {
-        jcenter()
-    }
+dependencies {
+    // Înlocuitori moderni pentru .jar-urile vechi din folderul libs
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
+    
+    // Înlocuitor modern pe 64-biți pentru sqlcipher.jar
+    implementation 'net.zetetic:android-database-sqlcipher:4.5.4@aar'
+    implementation 'androidx.sqlite:sqlite:2.4.0'
+    
+    // Înlocuitor pentru guava-r09.jar
+    implementation 'com.google.guava:guava:33.0.0-android'
+    
+    // Înlocuitor pentru commons-codec.jar
+    implementation 'commons-codec:commons-codec:1.16.0'
 }
